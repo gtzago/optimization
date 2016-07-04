@@ -2,6 +2,13 @@ from VNS import vns
 import numpy as np
 
 
+
+
+
+
+
+
+
 def fun(x, prt=False):
     def i(x):
         i = np.zeros((7, 1))
