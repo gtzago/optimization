@@ -1,10 +1,11 @@
 
-from os.path import os
-
-import numpy as np
-import itertools as it
 import math
+from os.path import os
+import time
+
+import itertools as it
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 class VNS_TSP(object):
@@ -48,23 +49,42 @@ class VNS_TSP(object):
         return s_out
 
     def run(self):
+        plt.ion()
+        fig = plt.figure()
+        ax = fig.add_subplot(111)
+        line1, = ax.plot(self.pos[self.s, 0], self.pos[self.s, 1], 'r-')
+        plt.hold(True)
+        plt.plot(self.pos[:, 0], self.pos[:, 1], 'go')
+        si = np.copy(self.s)  # solution at iteration i
+        i = 0
+        while i <= 100:
+            i += 1
+            print '######## Iteration {:d} ########\n'.format(i)
+            if any(si != self.s):
+                si = np.copy(self.s)  # solution at iteration i
+                i = 0
+                print '######## NEW SOLUTION FOUND! ########\n'.format(i)
 
-        for k in range(1, 40):
-            sl = self.shake(self.s, k)
-            for l in range(1, 10):
-                sll = self.vnd(sl, l)
-                if any(sll != sl):
-                    sl = sll
-                    l = 0
-#                     plt.figure()
-#                     plt.plot(self.pos[:, 0], self.pos[:, 1],'go')
-#                     plt.hold(True)
-#                     plt.plot(self.pos[sl, 0], self.pos[sl, 1])
-#                     plt.show()
-                    
-            if self.cost(sl) < self.cost(self.s):
-                self.s = sl
-                k = 0
+            k = 0
+            while k <= 3:
+                k += 1
+                # print 'Shaking at Neighborhood {:d}\n'.format(k)
+                sl = self.shake(self.s, k)
+                l = 0
+                while l <= 3:
+                    l += 1
+                    # print 'Local search at Neighborhood {:d}'.format(l)
+                    sll = self.vnd(sl, l)
+                    if any(sll != sl):
+                        sl = sll
+                        l = 0
+                if self.cost(sl) < self.cost(self.s):
+                    self.s = sl
+                    k = 0
+                    line1.set_xdata(self.pos[sl, 0])
+                    line1.set_ydata(self.pos[sl, 1])
+                    fig.canvas.draw()
+#                     time.sleep(0.01)
 
 
 def vns(x, fun, kmax, tmax):
