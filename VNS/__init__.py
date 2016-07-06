@@ -49,7 +49,17 @@ class VNS_TSP(object):
         return s_out
 
     def run(self):
+        counter = 0
         plt.ion()
+
+        fig_cost = plt.figure()
+        plt.title('Cost evolution')
+        ax_cost = fig_cost.add_subplot(111)
+        cost = np.zeros(500)
+        cost[counter] = self.cost(self.s)
+        line1_cost, = ax_cost.plot(range(500), cost, 'k.')
+        plt.grid(True)
+
         fig = plt.figure()
         ax = fig.add_subplot(111)
         line1, = ax.plot(self.pos[self.s, 0], self.pos[self.s, 1], 'r-')
@@ -84,6 +94,13 @@ class VNS_TSP(object):
                     line1.set_xdata(self.pos[sl, 0])
                     line1.set_ydata(self.pos[sl, 1])
                     fig.canvas.draw()
+            counter += 1
+            cost[counter] = self.cost(self.s)
+            line1_cost.set_xdata(range(500))
+            line1_cost.set_ydata(cost)
+            fig_cost.canvas.draw()
+
+
 #                     time.sleep(0.01)
 
 

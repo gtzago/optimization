@@ -43,8 +43,8 @@ with open('./database/att48_s.csv', 'rb') as csvfile:
     s = s - 1
 
 
-#d = d[0:15, 0:15]
-#pos = pos[0:15, :]
+# d = d[0:15, 0:15]
+# pos = pos[0:15, :]
 
 vns = VNS_TSP(d=d, pos=pos)
 vns.run()
